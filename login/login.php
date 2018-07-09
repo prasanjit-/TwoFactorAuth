@@ -8,7 +8,7 @@
  * @license GPLv3 - licence available here: http://www.gnu.org/copyleft/gpl.html
  * @link https://github.com/Arno0x/
  */
- 
+
 //------------------------------------------------------
 // Include config file
 require_once("../config.php");
@@ -33,14 +33,14 @@ else {
     $username = htmlspecialchars($_POST["username"], ENT_QUOTES);
     $password = $_POST["password"];
     $token = $_POST["token"];
-    
+
     //-----------------------------------------------------
     // Import database manager library
     require_once(DBMANAGER_LIB);
     try {
     	// Create the DB manager object
     	$dbManager = new DBManager(USER_SQL_DATABASE_FILE);
-    	
+
     	// Retrieve the password hash and stored Google Auth secret for this user
 	    if (!($result = $dbManager->getPasswordHashAndGauthSecret($username))) {
 	    	$error = "[ERROR] Unknown user";
@@ -48,7 +48,7 @@ else {
 	    	// Import the GoogleAuth library and create a GoogleAuth object
 		    require_once(GAUTH_LIB);
 		    $gauth = new GoogleAuthenticator();
-	    	
+
 	    	// Checking password hash and token
 	    	if (($result['PASSWORDHASH'] !== hash("sha256",$password)) || !($gauth->verifyCode($result['GAUTHSECRET'],$token))) {
 	   			$error = "[ERROR] Authentication failed";
@@ -56,9 +56,9 @@ else {
 	       		$isAdmin = $dbManager->getAdminStatus($username);
 	       	}
 	    }
-	    
+
 	    $dbManager->close();
-	    	
+
     	//--------------------------------------------------
 	    // Login successful - let's proceed
 	    if (!isset($error)) {
@@ -66,22 +66,22 @@ else {
 	        // Creating a session to persist the authentication
 	        session_name(SESSION_NAME);
 	        session_cache_limiter('private_no_expire');
-	        
+
 	        // Session parameters :
 	        // - Timelife of of the whole browser session
 	        // - Valid for all path on the domain, for this FQDN only
 	        // - Ensure Cookies are not available to Javascript
 	        // - Cookies are sent on https only
-	        $domain = ($_SERVER['HTTP_HOST'] !== 'localhost') ? $_SERVER['SERVER_NAME'] : false;
+	        $domain = ($_SERVER['HTTP_HOST'] !== 'localhost') ? $_SERVER['HTTP_HOST'] : false;
 	        session_set_cookie_params (0, "/", $domain, true, true);
-	    
+
 	        // Create a session
 	        session_start();
-	        
+
 	        $_SESSION["authenticated"] = true;
 	        $_SESSION["username"] = $username;
 	        $_SESSION["isAdmin"] = ($isAdmin === 1)? true: false;
-	        
+
 	        //--------------------------------------------------
 	        // Checking which URL we should redirect the user to
 	        if (isset($_GET['from'])) {
@@ -90,7 +90,7 @@ else {
 				$url = parse_url($_GET['from']);
 				$from = $url['path'] . (!empty($url['query']) ? '?' . $url['query'] : '') . (!empty($url['fragment']) ? '#' . $url['fragment'] : '');
 			}
-	            $redirectTo = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on")? "https://" : "http://").$_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$from;
+	            $redirectTo = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on")? "https://" : "http://").$_SERVER["HTTP_HOST"].":".$_SERVER["SERVER_PORT"].$from;
 	        }
 	        else {
 	            $redirectTo = AUTH_SUCCEED_REDIRECT_URL;
@@ -99,7 +99,7 @@ else {
 		}
     	else {
     	    http_response_code(403);
-        	require_once("loginForm.php");   
+        	require_once("loginForm.php");
     	}
     } catch (Exception $e) {
     	$error = "[ERROR] Cannot open user database file";

@@ -20,7 +20,7 @@ $baseUrl = dirname($_SERVER["SCRIPT_NAME"]);
 // deployed on a server and the installation hasn't been performed yet, then redirect
 // to the insstallation page
 if (!file_exists(USER_SQL_DATABASE_FILE)) {
-	$redirectTo = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on")? "https://" : "http://").$_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$baseUrl."/install/install.php";
+	$redirectTo = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on")? "https://" : "http://").$_SERVER["HTTP_HOST"].":".$_SERVER["SERVER_PORT"].$baseUrl."/install/install.php";
 	header("Location: ".$redirectTo,true,302);
 }
 else {
@@ -28,14 +28,14 @@ else {
 	// Restore session
 	session_name(SESSION_NAME);
 	session_start();
-	
+
 	// Check the whether we have a currently logged in user
     if (isset($_SESSION["authenticated"]) && $_SESSION["authenticated"] === true) {
-    	
+
     	//------------------------------------------------------
         // Retrieve the currently logged user from the session
         $username = $_SESSION["username"];
-        
+
     	echo <<<EOT
 		<!DOCTYPE html>
 		<html>
@@ -60,13 +60,13 @@ else {
             		</div> 	<!-- End of panel heading -->
 		            <ul class="list-group">
 EOT;
-        
+
         echo "<li class=\"list-group-item\"><a href=\"user/user.php\">User management</a> <span class=\"fa fa-user pull-right\" aria-hidden=\"true\"></span></li>";
-        
+
         if (isset($_SESSION["isAdmin"]) && $_SESSION["isAdmin"] === true) {
             echo "<li class=\"list-group-item\"><a href=\"admin/admin.php\">Administration</a> <span class=\"fa fa-wrench pull-right\" aria-hidden=\"true\"></span></li>";
         }
-        
+
         echo <<<EOT
 			  </ul>
 	        </div>
@@ -78,9 +78,9 @@ EOT;
 EOT;
     }
     else {
-        $redirectTo = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on")? "https://" : "http://").$_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$baseUrl."/login/login.php";
+        $redirectTo = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on")? "https://" : "http://").$_SERVER["HTTP_HOST"].":".$_SERVER["SERVER_PORT"].$baseUrl."/login/login.php";
 		header("Location: ".$redirectTo,true,302);
     }
-	
+
 }
 ?>

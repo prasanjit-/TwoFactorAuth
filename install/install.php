@@ -175,7 +175,7 @@ EOT;
 
     //------------------------------------------------------
     // Application base url
-    $baseUrl = dirname(dirname($_SERVER["SCRIPT_NAME"]));
+    $baseUrl = rtrim(dirname(dirname($_SERVER["SCRIPT_NAME"])), '/');
     echo <<<EOT
     <br>
     You can now go to the TwoFactorAuth <a href="{$baseUrl}/admin/admin.php">administration page</a>.

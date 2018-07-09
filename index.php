@@ -13,7 +13,7 @@ require_once("config.php");
 
 //------------------------------------------------------
 // Application base url
-$baseUrl = dirname($_SERVER["SCRIPT_NAME"]);
+$baseUrl = rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/');
 
 //------------------------------------------------------
 // If this page is being called for the first time since the package has been

@@ -72,9 +72,10 @@ else {
 	        // - Valid for all path on the domain, for this FQDN only
 	        // - Ensure Cookies are not available to Javascript
 			// - Cookies are sent on https only
-			$tld = strrchr ( $_SERVER['HTTP_HOST'], "." );
-			$tld = substr ( $tld, 1 );
-	        $domain = $tld;
+			print_r($_SERVER['HTTP_HOST']);
+			$domain_parts = explode(".", $_SERVER['HTTP_HOST']);
+			$domain_parts = array_slice($domain_parts, -2, 2, true);
+			$domain = implode(".", $domain_parts);
 	        session_set_cookie_params (0, "/", ".".$domain, true, true);
 
 	        // Create a session
@@ -88,14 +89,8 @@ else {
 	        //--------------------------------------------------
 	        // Checking which URL we should redirect the user to
 	        if (isset($_GET['from'])) {
-	        	$from = $_GET['from'];
-			if (preg_match('#^(?:https?:)?//#', $_GET['from'], $m)) {
-				$url = parse_url($_GET['from']);
-				$from = $url['path'] . (!empty($url['query']) ? '?' . $url['query'] : '') . (!empty($url['fragment']) ? '#' . $url['fragment'] : '');
+				$redirectTo = $_GET['from'];
 			}
-				$redirectTo = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on")? "https://" : "http://").$_SERVER["HTTP_HOST"].":".$_SERVER["SERVER_PORT"].$from;
-				$redirectTo = $from;
-	        }
 	        else {
 	            $redirectTo = AUTH_SUCCEED_REDIRECT_URL;
 	        }

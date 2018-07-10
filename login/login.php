@@ -75,10 +75,11 @@ else {
 			$tld = strrchr ( $_SERVER['HTTP_HOST'], "." );
 			$tld = substr ( $tld, 1 );
 	        $domain = $tld;
-	        session_set_cookie_params (0, "/", $domain, true, true);
+	        session_set_cookie_params (0, "/", ".".$domain, true, true);
 
 	        // Create a session
-	        session_start();
+			session_start();
+
 
 	        $_SESSION["authenticated"] = true;
 	        $_SESSION["username"] = $username;

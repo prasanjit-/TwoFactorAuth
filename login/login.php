@@ -75,9 +75,8 @@ else {
 			$domain_parts = explode(".", $_SERVER['HTTP_HOST']);
 			$domain_parts = array_slice($domain_parts, -2, 2, true);
 			$domain = implode(".", $domain_parts);
-			$doimain = preg_replace('#:\d+$#', '', $domain);
+			$domain = preg_replace('#:\d+$#', '', $domain);
 			session_set_cookie_params (0, "/", ".".$domain, true, true);
-			print_r($domain);exit;
 
 	        // Create a session
 			session_start();
@@ -90,13 +89,7 @@ else {
 	        //--------------------------------------------------
 	        // Checking which URL we should redirect the user to
 	        if (isset($_GET['from'])) {
-	        	$from = $_GET['from'];
-			if (preg_match('#^(?:https?:)?//#', $_GET['from'], $m)) {
-				$url = parse_url($_GET['from']);
-				$from = $url['path'] . (!empty($url['query']) ? '?' . $url['query'] : '') . (!empty($url['fragment']) ? '#' . $url['fragment'] : '');
-			}
-				$redirectTo = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on")? "https://" : "http://").$_SERVER["HTTP_HOST"].":".$_SERVER["SERVER_PORT"].$from;
-				$redirectTo = $from;
+	        	$redirectTo = $_GET['from'];
 	        }
 	        else {
 	            $redirectTo = AUTH_SUCCEED_REDIRECT_URL;

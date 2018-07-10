@@ -71,8 +71,10 @@ else {
 	        // - Timelife of of the whole browser session
 	        // - Valid for all path on the domain, for this FQDN only
 	        // - Ensure Cookies are not available to Javascript
-	        // - Cookies are sent on https only
-	        $domain = ($_SERVER['HTTP_HOST'] !== 'localhost') ? $_SERVER['HTTP_HOST'] : false;
+			// - Cookies are sent on https only
+			$tld = strrchr ( $_SERVER['HTTP_HOST'], "." );
+			$tld = substr ( $tld, 1 );
+	        $domain = $tld;
 	        session_set_cookie_params (0, "/", $domain, true, true);
 
 	        // Create a session

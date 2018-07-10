@@ -21,7 +21,7 @@ $baseUrl = rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/');
 // to the insstallation page
 if (!file_exists(USER_SQL_DATABASE_FILE)) {
 	$redirectTo = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on")? "https://" : "http://").$_SERVER["HTTP_HOST"].":".$_SERVER["SERVER_PORT"].$baseUrl."/install/install.php";
-	header("Location: ".$redirectTo,true,302);
+	header("Location: /install/install.php",true,302);
 }
 else {
 	//------------------------------------------------------
@@ -79,7 +79,7 @@ EOT;
     }
     else {
         $redirectTo = ((isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] === "on")? "https://" : "http://").$_SERVER["HTTP_HOST"].":".$_SERVER["SERVER_PORT"].$baseUrl."/login/login.php";
-		header("Location: ".$redirectTo,true,302);
+		header("Location: /login/login.php",true,302);
     }
 
 }

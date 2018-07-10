@@ -31,7 +31,7 @@ if (file_exists('../config.php')) {
 	http_response_code(401);
 }
 
-// * ========================= DEBUG BLOCK ========================== 
+// * ========================= DEBUG BLOCK ==========================
 
 if (defined('TFA_NGINX_DEBUG') AND TFA_NGINX_DEBUG)
 {
@@ -89,6 +89,6 @@ if (isset($_SESSION["authenticated"]) && $_SESSION["authenticated"] === true) {
 else {
 	// Else return an HTTP 401 status code
 	session_destroy();
-		http_response_code(401);
-	}
+	http_response_code(401);
+}
 ?>

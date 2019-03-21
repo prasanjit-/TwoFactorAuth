@@ -94,7 +94,7 @@ else {
 
 function redirect()
 {
-    if (!AUTH_FAILED_REDIRECT_URL) {
+    if (AUTH_FAILED_REDIRECT_URL) {
         header("Location: " . AUTH_FAILED_REDIRECT_URL);
         exit;
     }

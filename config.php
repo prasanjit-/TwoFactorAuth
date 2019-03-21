@@ -59,6 +59,11 @@ define('SESSION_NAME','2fatkn');
 // Otherwise, redirect to the URL specified here
 define('AUTH_SUCCEED_REDIRECT_URL','https://www.example.com/');
 
+// If an auth check fails, we normally send a 401 HTTP response code. But some
+// auth backends don't support redirecting on their own, so use this
+// to send a 302 response code with a Location header instead.
+define('AUTH_FAILED_REDIRECT_URL','');
+
 // If you are using TwoFactorAuth with nginx, and are experiencing common issues
 // like infinite redirects or failed authentications, you can log authentication
 // activity to the file /nginx/debug.log for your review.

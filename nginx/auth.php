@@ -24,11 +24,11 @@ if (file_exists('../config.php')) {
 	}
 	catch (Exception $e) {
 		// don't authenticate whenever there are notices or warnings in the config file
-		http_response_code(401);
+        redirect();
 	}
 } else {
 	// don't authenticate if the config file is missing!!
-	http_response_code(401);
+    redirect();
 }
 
 // * ========================= DEBUG BLOCK ==========================
@@ -73,7 +73,7 @@ if (defined('TFA_NGINX_DEBUG') AND TFA_NGINX_DEBUG)
 
 if (!defined('SESSION_NAME') OR !SESSION_NAME) {
 	// don't authenticate if config.php is broken!!
-	http_response_code(401);
+    redirect();
 }
 
 //====================================================
@@ -89,6 +89,15 @@ if (isset($_SESSION["authenticated"]) && $_SESSION["authenticated"] === true) {
 else {
 	// Else return an HTTP 401 status code
 	session_destroy();
-	http_response_code(401);
+    redirect();
 }
-?>
+
+function redirect()
+{
+    if (!AUTH_FAILED_REDIRECT_URL) {
+        header("Location: " . AUTH_FAILED_REDIRECT_URL);
+        exit;
+    }
+
+    http_response_code(401);
+}

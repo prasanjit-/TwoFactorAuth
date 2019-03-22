@@ -95,7 +95,22 @@ else {
 function redirect()
 {
     if (AUTH_FAILED_REDIRECT_URL) {
-        header("Location: " . AUTH_FAILED_REDIRECT_URL);
+		$url = AUTH_FAILED_REDIRECT_URL;
+
+		if (!isset($_GET['from']) &&
+			isset(_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+			isset(_SERVER['HTTP_X_FORWARDED_HOST']) &&
+			isset(_SERVER['HTTP_X_FORWARDED_URI'])) {
+			$from = $_GET['from'] ?? "{$_SERVER['HTTP_X_FORWARDED_PROTO']}://{$_SERVER['HTTP_X_FORWARDED_HOST']}{$_SERVER['HTTP_X_FORWARDED_URI']}";
+			$query = parse_url($url, PHP_URL_QUERY);
+			if ($query) {
+				$url .= "&from=$from";
+			} else {
+				$url .= "?from=$from";
+			}
+		}
+
+        header("Location: $url");
         exit;
     }
 

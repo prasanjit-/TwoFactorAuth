@@ -57,7 +57,17 @@ else {
 	       	}
 	    }
 
-	    $dbManager->close();
+		$dbManager->close();
+
+		// Session parameters :
+		// - Timelife of of the whole browser session
+		// - Valid for all path on the domain, for this FQDN only
+		// - Ensure Cookies are not available to Javascript
+		// - Cookies are sent on https only
+		$domain_parts = explode(".", $_SERVER['HTTP_HOST']);
+		$domain_parts = array_slice($domain_parts, -2, 2, true);
+		$domain = implode(".", $domain_parts);
+		$domain = preg_replace('#:\d+$#', '', $domain);
 
     	//--------------------------------------------------
 	    // Login successful - let's proceed
@@ -66,16 +76,6 @@ else {
 	        // Creating a session to persist the authentication
 	        session_name(SESSION_NAME);
 	        session_cache_limiter('private_no_expire');
-
-	        // Session parameters :
-	        // - Timelife of of the whole browser session
-	        // - Valid for all path on the domain, for this FQDN only
-	        // - Ensure Cookies are not available to Javascript
-			// - Cookies are sent on https only
-			$domain_parts = explode(".", $_SERVER['HTTP_HOST']);
-			$domain_parts = array_slice($domain_parts, -2, 2, true);
-			$domain = implode(".", $domain_parts);
-			$domain = preg_replace('#:\d+$#', '', $domain);
 			session_set_cookie_params (0, "/", ".".$domain, true, true);
 
 	        // Create a session
@@ -97,6 +97,8 @@ else {
 	        header("Location: ".$redirectTo,true,302);
 		}
     	else {
+			unset($_COOKIE[SESSION_NAME]);
+			setcookie(SESSION_NAME, null, -1, '/', $domain);
     	    http_response_code(403);
         	require_once("loginForm.php");
     	}

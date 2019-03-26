@@ -59,16 +59,6 @@ else {
 
 		$dbManager->close();
 
-		// Session parameters :
-		// - Timelife of of the whole browser session
-		// - Valid for all path on the domain, for this FQDN only
-		// - Ensure Cookies are not available to Javascript
-		// - Cookies are sent on https only
-		$domain_parts = explode(".", $_SERVER['HTTP_HOST']);
-		$domain_parts = array_slice($domain_parts, -2, 2, true);
-		$domain = implode(".", $domain_parts);
-		$domain = preg_replace('#:\d+$#', '', $domain);
-
     	//--------------------------------------------------
 	    // Login successful - let's proceed
 	    if (!isset($error)) {
@@ -76,7 +66,7 @@ else {
 	        // Creating a session to persist the authentication
 	        session_name(SESSION_NAME);
 	        session_cache_limiter('private_no_expire');
-			session_set_cookie_params (0, "/", ".".$domain, true, true);
+			session_set_cookie_params (0, "/", COOKIE_DOMAIN, true, true);
 
 	        // Create a session
 			session_start();
@@ -98,7 +88,7 @@ else {
 		}
     	else {
 			unset($_COOKIE[SESSION_NAME]);
-			setcookie(SESSION_NAME, null, -1, '/', $domain);
+			setcookie(SESSION_NAME, null, -1, '/', COOKIE_DOMAIN);
     	    http_response_code(403);
         	require_once("loginForm.php");
     	}

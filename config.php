@@ -47,6 +47,8 @@ define('QRCODE_TITLE','www.example.com');
 // Application & Session settings
 //========================================================================
 
+define('COOKIE_DOMAIN', $_SERVER['HTTP_HOST']);
+
 // Set the session name you want to use. If you're integrating TwoFactorAuth
 // with your own application session, you might want to set it to the session name
 // you're already using

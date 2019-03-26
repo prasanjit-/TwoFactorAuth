@@ -94,18 +94,6 @@ else {
 
 function redirect()
 {
-	// Session parameters :
-	// - Timelife of of the whole browser session
-	// - Valid for all path on the domain, for this FQDN only
-	// - Ensure Cookies are not available to Javascript
-	// - Cookies are sent on https only
-	$domain_parts = explode(".", $_SERVER['HTTP_HOST']);
-	$domain_parts = array_slice($domain_parts, -2, 2, true);
-	$domain = implode(".", $domain_parts);
-	$domain = preg_replace('#:\d+$#', '', $domain);
-
-	unset($_COOKIE[SESSION_NAME]);
-	setcookie(SESSION_NAME, null, -1, '/', $domain);
     if (AUTH_FAILED_REDIRECT_URL) {
 		$url = AUTH_FAILED_REDIRECT_URL;
 

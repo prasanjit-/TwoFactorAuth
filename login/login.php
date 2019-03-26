@@ -87,8 +87,6 @@ else {
 	        header("Location: ".$redirectTo,true,302);
 		}
     	else {
-			unset($_COOKIE[SESSION_NAME]);
-			setcookie(SESSION_NAME, null, -1, '/', COOKIE_DOMAIN);
     	    http_response_code(403);
         	require_once("loginForm.php");
     	}

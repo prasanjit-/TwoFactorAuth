@@ -78,6 +78,7 @@ if (!defined('SESSION_NAME') OR !SESSION_NAME) {
 
 //====================================================
 // Restore an existing session
+session_set_cookie_params (0, "/", COOKIE_DOMAIN, true, true);
 session_name(SESSION_NAME);
 session_start();
 

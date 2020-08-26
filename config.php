@@ -41,7 +41,7 @@ define('QRCODE_TEMP_DIR',dirname(__FILE__).DIRECTORY_SEPARATOR.'temp'.DIRECTORY_
 // Set the title that will be used for the QRCode generated
 // This title appears in the Google authenticator App to help identifying what the token relates to
 // --> CHANGE THIS TO YOUR OWN MEANINGFUL TITLE
-define('QRCODE_TITLE','www.example.com');
+define('QRCODE_TITLE','STARZPLAY 2-Factor Gateway');
 
 //========================================================================
 // Application & Session settings
@@ -52,14 +52,14 @@ define('COOKIE_DOMAIN', $_SERVER['HTTP_HOST']);
 // Set the session name you want to use. If you're integrating TwoFactorAuth
 // with your own application session, you might want to set it to the session name
 // you're already using
-define('SESSION_NAME','2fatkn');
+define('SESSION_NAME','StArzPlay2factoR');
 
 // Redirection mechanism upon successful login :
 // If the user has been redirected to the login page from another page AND this other page
 // is passed as a GET parameter to the login page, then the user will be redirected back to
 // the originating URL
 // Otherwise, redirect to the URL specified here
-define('AUTH_SUCCEED_REDIRECT_URL','https://www.example.com/');
+define('AUTH_SUCCEED_REDIRECT_URL','https://voucher.aws.playco.com/');
 
 // If an auth check fails, we normally send a 401 HTTP response code. But some
 // auth backends don't support redirecting on their own, so use this
